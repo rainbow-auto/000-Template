@@ -13,7 +13,9 @@ void QuickSort (int l, int r)
         return;
     }
     
-    int x = a[(l + r) >> 1];
+    int mid = (l + r) >> 1;
+
+    int x = a[mid];
     int i = l - 1;
     int j = r + 1;
     while (i < j)
@@ -22,6 +24,9 @@ void QuickSort (int l, int r)
         do j --; while (a[j] > x);
         if (i < j) swap (a[i], a[j]);
     }
+
+    QuickSort (l, j);
+    QuickSort (j + 1, r);
 }
 
 int main ()
@@ -30,6 +35,13 @@ int main ()
     for (int i = 1; i <= n; i++)
     {
         cin >> a[i];
+    }
+
+    QuickSort (1, n);
+
+    for (int i = 1; i <= n; i++)
+    {
+        cout << a[i] << " ";
     }
     return 0;
 }
