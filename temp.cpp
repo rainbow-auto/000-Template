@@ -1,29 +1,35 @@
-int cnt;
-int to[maxn], pre[maxn], last[maxn];
+#include <iostream>
+using namespace std;
 
-int stk[maxn], spos;
-bool ins[maxn];
-int scc[maxn], gpos;
-int dfn[maxn], low[maxn], npos;
+const int maxn = 1e6 + 10;
 
-void tarjan (int now, int fa)
+int n;
+int a[maxn];
+
+void QuickSort (int l, int r)
 {
-    dfn[now] = low[now] = ++npos;
-    stk[++spos] = now;
-    ins[now] = true;
-
-    for (int i = last[now]; i ; i = pre[i])
+    if (l >= r)
     {
-        int t = to[i];
-        if (t == fa) continue;
-        if (not dfn (t))
-        {
-            tarjan (t, now); 
-            
-        }
-        else if ()
-        {
-
-        }
+        return;
     }
+    
+    int x = a[(l + r) >> 1];
+    int i = l - 1;
+    int j = r + 1;
+    while (i < j)
+    {
+        do i ++; while (a[i] < x);
+        do j --; while (a[j] > x);
+        if (i < j) swap (a[i], a[j]);
+    }
+}
+
+int main ()
+{
+    cin >> n;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+    return 0;
 }
