@@ -141,3 +141,57 @@ vector<int> Add (vector<int> a, vector<int> b)
 ```
 
 #### 减法 (高精度 - 高精度)
+
+```cpp
+bool operator < (vector<int> a, vector<int> b)
+{
+    if (a.size() != b.size()) return a.size() < b.size();
+    for (int i = a.size() - 1; i >= 0; i --)
+    {
+        if (a[i] != b[i])
+        {
+            return a[i] < b[i];
+        }
+    }
+    return false; // a == b
+}
+
+vector<int> Sub(vector<int> a, vector<int> b)
+{
+    bool flag = false;
+    if (a < b)
+    {
+        flag = true;
+        swap (a, b);
+    }
+
+    vector<int> res;
+
+    int t = 0;
+    for (int i = 0; i < a.size(); i++)
+    {
+        t = a[i] - t;
+        if (i < b.size()) t -= b[i];
+        res.push_back((t + 10) % 10);
+        if (t < 0)
+        {
+            t = 1;
+        }
+        else
+        {
+            t = 0;
+        }
+    }
+
+    while (res.size() > 1 and res.back() == 0) res.pop_back ();
+    if (flag)
+    {
+        res.push_back(-1); // 负数 -1
+    }
+    else
+    {
+        res.push_back(0); // 正数 0
+    }
+    return res;
+}
+```
