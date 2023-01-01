@@ -1,47 +1,30 @@
 #include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+#include <list>
+#include <stack>
+#include <map>
+#include <set>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+
 using namespace std;
 
-const int maxn = 1e6 + 10;
-
-int n;
-int a[maxn];
-
-void QuickSort (int l, int r)
-{
-    if (l >= r)
+namespace Reader{
+    int read ()
     {
-        return;
+        char c = getchar (); 
+        int x = 0, flag = 1;
+        while (not isdigit (c)) { if (c == '-') flag = -1; c = getchar(); }
+        while (isdigit (c)) { x = x * 10 + c - '0'; c = getchar(); }
+        return x * flag;
     }
-    
-    int mid = (l + r) >> 1;
-
-    int x = a[mid];
-    int i = l - 1;
-    int j = r + 1;
-    while (i < j)
-    {
-        do i ++; while (a[i] < x);
-        do j --; while (a[j] > x);
-        if (i < j) swap (a[i], a[j]);
-    }
-
-    QuickSort (l, j);
-    QuickSort (j + 1, r);
 }
 
 int main ()
 {
-    cin >> n;
-    for (int i = 1; i <= n; i++)
-    {
-        cin >> a[i];
-    }
-
-    QuickSort (1, n);
-
-    for (int i = 1; i <= n; i++)
-    {
-        cout << a[i] << " ";
-    }
+    
     return 0;
 }
