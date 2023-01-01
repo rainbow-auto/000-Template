@@ -1,7 +1,9 @@
-# Rainbow_auto的模板
-> powered by CTL 代码来自acwing.com
+# Rainbow_auto 的模板
+
+> powered by CTL 代码来自 acwing.com
 
 ## 火车头
+
 ```cpp
 #include <iostream>
 #include <algorithm>
@@ -20,7 +22,7 @@ using namespace std;
 namespace Reader{
     int read ()
     {
-        char c = getchar (); 
+        char c = getchar ();
         int x = 0, flag = 1;
         while (not isdigit (c)) { if (c == '-') flag = -1; c = getchar(); }
         while (isdigit (c)) { x = x * 10 + c - '0'; c = getchar(); }
@@ -30,7 +32,7 @@ namespace Reader{
 
 int main ()
 {
-    
+
     return 0;
 }
 ```
@@ -46,7 +48,7 @@ void QuickSort (int l, int r)
     {
         return;
     }
-    
+
     int mid = (l + r) >> 1;
 
     int x = a[mid];
@@ -64,3 +66,31 @@ void QuickSort (int l, int r)
 }
 ```
 
+### 二分
+
+#### 整数二分
+
+```cpp
+int bsearch1 (int x) // lower_bound (x)
+{
+    int l = 1, r = n;
+    while (l < r)
+    {
+        int mid = (l + r) >> 1;
+        if (a[mid] >= x) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+
+int bsearch2 (int x) // upper_bound (x) - 1
+{
+    int l = 1, r = n;
+    while (l < r)
+    {
+        int mid = (l + r + 1) >> 1;
+        if (a[mid] <= x) l = mid;
+        else r = mid - 1;
+    }
+}
+```

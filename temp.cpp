@@ -23,6 +23,29 @@ namespace Reader{
     }
 }
 
+int bsearch1 (int x) // lower_bound (x)
+{
+    int l = 1, r = n;
+    while (l < r)
+    {
+        int mid = (l + r) >> 1;
+        if (a[mid] >= x) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
+
+int bsearch2 (int x) // upper_bound (x) - 1
+{
+    int l = 1, r = n;
+    while (l < r)
+    {
+        int mid = (l + r + 1) >> 1;
+        if (a[mid] <= x) l = mid;
+        else r = mid - 1;
+    }
+}
+
 int main ()
 {
     
