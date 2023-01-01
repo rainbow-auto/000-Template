@@ -195,3 +195,21 @@ vector<int> Sub(vector<int> a, vector<int> b)
     return res;
 }
 ```
+
+#### 乘法 (高精度\*低精度)
+
+```cpp
+vector<int> mul (vector<int> a, int b)
+{
+    vector<int> res;
+    int t = 0;
+    for (int i = 0; i < a.size() or t; i ++)
+    {
+        if (i < a.size()) t += a[i] * b;
+        res.push_back(t % 10);
+        t /= 10;
+    }
+    while (res.size() > 1 and res.back() == 0) res.pop_back();
+}
+
+```
