@@ -23,27 +23,17 @@ namespace Reader{
     }
 }
 
-int bsearch1 (int x) // lower_bound (x)
+double eps = 1e-9;
+double bsearch_double (double x) // 求x的三次方根
 {
-    int l = 1, r = n;
-    while (l < r)
+    double l = min (x, -x), r = max (x, -x);
+    while (r - l > eps)
     {
-        int mid = (l + r) >> 1;
-        if (a[mid] >= x) r = mid;
-        else l = mid + 1;
+        double mid = (l + r) / 2;
+        if (mid * mid * mid > x) l = mid;
+        else r = mid;
     }
     return l;
-}
-
-int bsearch2 (int x) // upper_bound (x) - 1
-{
-    int l = 1, r = n;
-    while (l < r)
-    {
-        int mid = (l + r + 1) >> 1;
-        if (a[mid] <= x) l = mid;
-        else r = mid - 1;
-    }
 }
 
 int main ()

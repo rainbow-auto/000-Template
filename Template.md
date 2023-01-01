@@ -94,3 +94,20 @@ int bsearch2 (int x) // upper_bound (x) - 1
     }
 }
 ```
+
+#### 浮点数二分
+
+```cpp
+double eps = 1e-9;
+double bsearch_double (double x) // 求x的三次方根
+{
+    double l = min (x, -x), r = max (x, -x);
+    while (r - l > eps)
+    {
+        double mid = (l + r) / 2;
+        if (mid * mid * mid > x) l = mid;
+        else r = mid;
+    }
+    return l;
+}
+```
