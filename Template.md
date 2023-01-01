@@ -274,3 +274,31 @@ inline int sum (int x1, int y1, int x2, int y2)
     return s[x2][y2] - s[x2][y1 - 1] - s[x1 - 1][y2] + s[x1 - 1][x2 - 1];
 }
 ```
+
+### 差分
+
+#### 一维差分
+
+```cpp
+inline void insert (int l, int r, int x)
+{
+    sub[l] += x;
+    sub[r + 1] -= x;
+}
+
+inline void init ()
+{
+    for (int i = 1; i <= n; i++)
+    {
+        insert(i, i, a[i]);
+    }
+}
+
+inline void build_sum ()
+{
+    for (int i = 1; i <= n; i++)
+    {
+        sum[i] = sum[i - 1] + sub[i];
+    }
+}
+```

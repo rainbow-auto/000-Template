@@ -33,27 +33,56 @@ namespace Reader
     }
 }
 
-int a[maxn][maxn];
-int s[maxn][maxn];
-int n;
+const int maxn = 100005;
+int n, m;
+int a[maxn];
+int sub[maxn]; // 差分
+int sum[maxn]; // 前缀和
+
+inline void insert (int l, int r, int x)
+{
+    sub[l] += x;
+    sub[r + 1] -= x;
+}
+
 inline void init ()
 {
-    for (int i = 1; i <= n; i ++)
+    for (int i = 1; i <= n; i++)
     {
-        for(int j = 1; j <= m; j++)
-        {
-            s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1] + a[i][j];
-        }        
+        insert(i, i, a[i]);
     }
 }
 
-inline int sum (int x1, int y1, int x2, int y2)
+inline void build_sum ()
 {
-    return s[x2][y2] - s[x2][y1 - 1] - s[x1 - 1][y2] + s[x1 - 1][x2 - 1];
+    for (int i = 1; i <= n; i++)
+    {
+        sum[i] = sum[i - 1] + sub[i];
+    }
 }
 
 int main()
 {
+    n = Reader::read(), m = Reader::read();
+    
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+    init();
+
+    for (int i = 1; i <= m; i++)
+    {
+        int l, r, x;
+        cin >> l >> r >> x;
+        insert (l, r, x);
+    }
+
+    build_sum();
+    for (int i = 1; i <= n; i++)
+    {
+        cout << sum[i] << " ";
+    }
 
     return 0;
 }
