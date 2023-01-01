@@ -213,3 +213,22 @@ vector<int> mul (vector<int> a, int b)
 }
 
 ```
+
+#### 除法 (高精度/低精度)
+
+```cpp
+
+vector<int> div (vector<int> a, int b, int& r)
+{
+    vector<int> res;
+    r = 0;
+    for (int i = 0; i < a.size(); i ++)
+    {
+        r = r * 10 + a[i];
+        res.push_back (r / b);
+        r %= b;
+    }
+    return res;
+}
+
+```

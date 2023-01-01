@@ -33,17 +33,17 @@ namespace Reader
     }
 }
 
-vector<int> mul (vector<int> a, int b)
+vector<int> div (vector<int> a, int b, int& r)
 {
     vector<int> res;
-    int t = 0;
-    for (int i = 0; i < a.size() or t; i ++)
+    r = 0;
+    for (int i = 0; i < a.size(); i ++)
     {
-        if (i < a.size()) t += a[i] * b;
-        res.push_back(t % 10);
-        t /= 10;
+        r = r * 10 + a[i];
+        res.push_back (r / b);
+        r %= b;
     }
-    while (res.size() > 1 and res.back() == 0) res.pop_back();
+    return res;
 }
 
 int main()
