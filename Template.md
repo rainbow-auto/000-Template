@@ -235,6 +235,8 @@ vector<int> div (vector<int> a, int b, int& r)
 
 ### 前缀和
 
+#### 一维
+
 ```cpp
 void init ()
 {
@@ -247,5 +249,28 @@ void init ()
 int sum (int l, int r)
 {
     return s[r] - s[l - 1];
+}
+```
+
+#### 二维
+
+```cpp
+int a[maxn][maxn];
+int s[maxn][maxn];
+int n;
+inline void init ()
+{
+    for (int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= m; j++)
+        {
+            s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1] + a[i][j];
+        }
+    }
+}
+
+inline int sum (int x1, int y1, int x2, int y2)
+{
+    return s[x2][y2] - s[x2][y1 - 1] - s[x1 - 1][y2] + s[x1 - 1][x2 - 1];
 }
 ```
