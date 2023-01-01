@@ -33,17 +33,22 @@ namespace Reader
     }
 }
 
-vector<int> div (vector<int> a, int b, int& r)
+const int maxn = 100005;
+int n;
+int s[maxn];
+int a[maxn];
+
+void init ()
 {
-    vector<int> res;
-    r = 0;
-    for (int i = 0; i < a.size(); i ++)
+    for (int i = 1; i <= n; i++)
     {
-        r = r * 10 + a[i];
-        res.push_back (r / b);
-        r %= b;
+        s[i] = s[i - 1] + a[i];
     }
-    return res;
+}
+
+int sum (int l, int r)
+{
+    return s[r] - s[l - 1];
 }
 
 int main()

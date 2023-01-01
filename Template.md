@@ -232,3 +232,20 @@ vector<int> div (vector<int> a, int b, int& r)
 }
 
 ```
+
+### 前缀和
+
+```cpp
+void init ()
+{
+    for (int i = 1; i <= n; i++)
+    {
+        s[i] = s[i - 1] + a[i];
+    }
+}
+
+int sum (int l, int r)
+{
+    return s[r] - s[l - 1];
+}
+```
