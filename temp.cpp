@@ -12,32 +12,65 @@
 
 using namespace std;
 
-namespace Reader{
-    int read ()
+namespace Reader
+{
+    int read()
     {
-        char c = getchar (); 
+        char c = getchar();
         int x = 0, flag = 1;
-        while (not isdigit (c)) { if (c == '-') flag = -1; c = getchar(); }
-        while (isdigit (c)) { x = x * 10 + c - '0'; c = getchar(); }
+        while (not isdigit(c))
+        {
+            if (c == '-')
+                flag = -1;
+            c = getchar();
+        }
+        while (isdigit(c))
+        {
+            x = x * 10 + c - '0';
+            c = getchar();
+        }
         return x * flag;
     }
 }
 
-double eps = 1e-9;
-double bsearch_double (double x) // 求x的三次方根
+vector<int> Add (vector<int> a, vector<int> b)
 {
-    double l = min (x, -x), r = max (x, -x);
-    while (r - l > eps)
+    if (a.size() < b.size())
     {
-        double mid = (l + r) / 2;
-        if (mid * mid * mid > x) l = mid;
-        else r = mid;
+        swap (a, b);
     }
-    return l;
+
+    vector<int> res;
+    int t = 0;
+    for (int i = 0; i < a.size(); i++)
+    {
+        t += a[i];
+        if (i < b.size()) t += b[i];
+        res.push_back (t % 10);
+        t /= 10;
+    }
+
+    if (t) res.push_back(t);
+
+    return res;
 }
 
-int main ()
+int main()
 {
+    string as, bs;
+    cin >> as >> bs;
+
+    vector<int> a;
+    vector<int> b;
+    for (int i = as.size() - 1; i >= 0; i--) a.push_back(as[i] - '0');     
+    for (int i = bs.size() - 1; i >= 0; i--) b.push_back(bs[i] - '0');     
     
+    vector<int> res = Add (a, b);
+    for (int i = res.size() - 1; i >= 0; i--)
+    {
+        cout << res[i];
+    }
+    cout << endl;
+
     return 0;
 }
