@@ -358,3 +358,17 @@ inline void two_pointers ()
     }
 }
 ```
+
+### 位运算
+
+```cpp
+inline int lowbit(int x)
+{
+    return x & (-x);
+}
+
+inline int get_bit (int x, int k)
+{
+    return (x >> k) & 1;
+}
+```

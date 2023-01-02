@@ -33,17 +33,14 @@ namespace Reader
     }
 }
 
-inline void two_pointers ()
+inline int lowbit(int x)
 {
-    for (int i = 0, j = 0; i < n; i++)
-    {
-        while (j < i and check (j, i))
-        {
-            j++; 
-        }
-        
-        // 具体逻辑
-    }
+    return x & (-x);
+}
+
+inline int get_bit (int x, int k)
+{
+    return (x >> k) & 1;
 }
 
 int main()
