@@ -302,3 +302,42 @@ inline void build_sum ()
     }
 }
 ```
+
+#### 二维差分
+
+```cpp
+int d[maxn][maxn]; // 差分数组
+int s[maxn][maxn]; // 前缀和数组
+
+int a[maxn][maxn]; // 原数组
+
+inline void insert (int x1, int y1, int x2, int y2, int x)
+{
+    d[x2 + 1][y2 + 1] += x;
+    d[x2 + 1][y1] -= x;
+    d[x1][y2 + 1] -= x;
+    d[x1][y1] += x;
+}
+
+void init ()
+{
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= m; j++)
+        {
+            insert (i, j, i, j, a[i][j]);
+        }
+    }
+}
+
+void build_sum ()
+{
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= m; j++)
+        {
+            s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1] + d[i][j];
+        }
+    }
+}
+```
