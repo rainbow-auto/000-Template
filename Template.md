@@ -396,3 +396,37 @@ inline int find (int x) // 原来值为x, 对应值为find(x)
     return l + 1; // 下标从1开始则 + 1
 }
 ```
+
+### 区间合并
+
+```cpp
+typedef pair<int, int> PII;
+
+int n;
+vector<PII> ranges;
+
+inline void merge (vector<PII>& segs)
+{
+    vector<PII> res;
+    sort (segs.begin(), segs.end());
+
+    int st = -2e9, ed = -2e9;
+    for (auto seg : segs)
+    {
+        if (seg.first > ed)
+        {
+            if (st != -2e9) res.push_back ({st, ed});
+            st = seg.first;
+            ed = seg.second;
+        }
+        else
+        {
+            ed = max (ed, seg.second);
+        }
+    }
+    if (st != -2e9) res.push_back ({st, ed});
+
+    segs = res;
+}
+
+```

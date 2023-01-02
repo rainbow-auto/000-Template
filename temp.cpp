@@ -33,25 +33,35 @@ namespace Reader
     }
 }
 
-vector<int> all; // 所有需要离散化的数
+typedef pair<int, int> PII;
 
-inline void discretize ()
-{
-    sort (all.begin(), all.end());
-    all.erase (unique (all.begin(), all.end()), all.end());
-}
+int n;
+vector<PII> ranges;
 
-inline int find (int x) // 原来值为x, 对应值为find(x)
+inline void merge (vector<PII>& segs)
 {
-    int l = 0, r = all.size() - 1;
-    while (l < r)
+    vector<PII> res;
+    sort (segs.begin(), segs.end());
+    
+    int st = -2e9, ed = -2e9;
+    for (auto seg : segs)
     {
-        int mid = (l + r) >> 1;
-        if (all[mid] >= x) r = mid;
-        else l = mid - 1;
+        if (seg.first > ed)
+        {
+            if (st != -2e9) res.push_back ({st, ed});
+            st = seg.first;
+            ed = seg.second;
+        }
+        else
+        {
+            ed = max (ed, seg.second);
+        }
     }
-    return l + 1; // 下标从1开始则 + 1
+    if (st != -2e9) res.push_back ({st, ed});
+
+    segs = res;
 }
+
 
 int main()
 {
