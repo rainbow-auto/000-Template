@@ -48,7 +48,7 @@ inline int find (int x) // 原来值为x, 对应值为find(x)
     {
         int mid = (l + r) >> 1;
         if (all[mid] >= x) r = mid;
-        else l = mid;
+        else l = mid - 1;
     }
     return l + 1; // 下标从1开始则 + 1
 }
