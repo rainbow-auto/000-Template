@@ -372,3 +372,27 @@ inline int get_bit (int x, int k)
     return (x >> k) & 1;
 }
 ```
+
+### 离散化
+
+```cpp
+vector<int> all; // 所有需要离散化的数
+
+inline void discretize ()
+{
+    sort (all.begin(), all.end());
+    all.erase (unique (all.begin(), all.end()), all.end());
+}
+
+inline int find (int x) // 原来值为x, 对应值为find(x)
+{
+    int l = 0, r = all.size() - 1;
+    while (l < r)
+    {
+        int mid = (l + r) >> 1;
+        if (all[mid] >= x) r = mid;
+        else l = mid;
+    }
+    return l + 1; // 下标从1开始则 + 1
+}
+```
