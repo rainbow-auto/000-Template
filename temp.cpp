@@ -37,7 +37,7 @@ inline void two_pointers ()
 {
     for (int i = 0, j = 0; i < n; i++)
     {
-        while (i < j and check (j, i))
+        while (j < i and check (j, i))
         {
             j++; 
         }
