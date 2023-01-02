@@ -341,3 +341,20 @@ void build_sum ()
     }
 }
 ```
+
+### 双指针法
+
+```cpp
+inline void two_pointers ()
+{
+    for (int i = 0, j = 0; i < n; i++)
+    {
+        while (i < j and check (j, i))
+        {
+            j++;
+        }
+
+        // 具体逻辑
+    }
+}
+```
