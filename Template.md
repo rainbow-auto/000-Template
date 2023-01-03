@@ -430,3 +430,31 @@ inline void merge (vector<PII>& segs)
 }
 
 ```
+
+### KMP
+
+```cpp
+n = Reader::read();
+for (int i = 1; i <= n; i++) cin >> p[i];
+
+m = Reader::read();
+for (int i = 1; i <= m; i++) cin >> s[i];
+
+for (int i = 2, j = 0; i <= n; i++)
+{
+    while (j and p[j + 1] != p[i]) j = nxt[j];
+    if (p[j + 1] == p[i]) j++;
+    nxt[i] = j;
+}
+
+for (int i = 1, j = 0; i <= m; i++)
+{
+    while (j and p[j + 1] != s[i]) j = nxt[j];
+    if (p[j + 1] == s[i]) j++;
+    if (j == n)
+    {
+        cout << i - n << " ";
+        j = nxt[j];
+    }
+}
+```
