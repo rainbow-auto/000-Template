@@ -476,3 +476,16 @@ for (int i = 1; i <= n; i++)
     }
 }
 ```
+
+### 单调栈
+
+```cpp
+stack<int> s;
+for (int i = 1; i <= n; i++)
+{
+    while (not s.empty() and a[s.top()] >= a[i]) s.pop();
+    if (s.empty()) cout << "-1 ";
+    else cout << s.top() << " ";
+    s.push(i);
+}
+```

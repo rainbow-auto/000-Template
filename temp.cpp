@@ -41,17 +41,14 @@ int a[maxn];
 
 int main()
 {
-    deque<int> q;
+    stack<int> s;
     for (int i = 1; i <= n; i++)
     {
-        while (not q.empty() and i - q.back() > k) q.pop_back();
-        while (not q.empty() and a[q.front()] >= a[i]) q.pop_front();
-        q.push_front(i);
-        if (i >= k)
-        {
-            cout << a[q.back()] << endl;
-        }
+        while (not s.empty() and a[s.top()] >= a[i]) s.pop();
+        if (s.empty()) cout << "-1 ";
+        else cout << s.top() << " ";
+        s.push(i);
     }
-    
+
     return 0;
 }
