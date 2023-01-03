@@ -33,39 +33,25 @@ namespace Reader
     }
 }
 
-const int maxn = 1000005;
+const int maxn = 100005;
 
-int nxt[maxn];
-int s[maxn];
-int p[maxn];
-
-int n, m;
+int k;
+int n;
+int a[maxn];
 
 int main()
 {
-    n = Reader::read();
-    for (int i = 1; i <= n; i++) cin >> p[i];
-
-    m = Reader::read();
-    for (int i = 1; i <= m; i++) cin >> s[i];
-
-    for (int i = 2, j = 0; i <= n; i++)
+    deque<int> q;
+    for (int i = 1; i <= n; i++)
     {
-        while (j and p[j + 1] != p[i]) j = nxt[j];
-        if (p[j + 1] == p[i]) j++;
-        nxt[i] = j;
-    }
-
-    for (int i = 1, j = 0; i <= m; i++)
-    {
-        while (j and p[j + 1] != s[i]) j = nxt[j];
-        if (p[j + 1] == s[i]) j++;
-        if (j == n)
+        while (not q.empty() and i - q.back() > k) q.pop_back();
+        while (not q.empty() and a[q.front()] >= a[i]) q.pop_front();
+        q.push_front(i);
+        if (i >= k)
         {
-            cout << i - n << " ";
-            j = nxt[j];
-        }   
+            cout << a[q.back()] << endl;
+        }
     }
-
+    
     return 0;
 }

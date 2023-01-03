@@ -458,3 +458,21 @@ for (int i = 1, j = 0; i <= m; i++)
     }
 }
 ```
+
+## 基础数据结构
+
+### 单调队列
+
+```cpp
+deque<int> q;
+for (int i = 1; i <= n; i++)
+{
+    while (not q.empty() and i - q.back() > k) q.pop_back();
+    while (not q.empty() and a[q.front()] >= a[i]) q.pop_front();
+    q.push_front(i);
+    if (i >= k)
+    {
+        cout << a[q.back()] << endl;
+    }
+}
+```
