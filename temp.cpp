@@ -35,42 +35,29 @@ namespace Reader
 
 
 const int maxn = 100005;
-int trie[maxn][26];
-int cnt[maxn];
-int id;
+int fa[maxn];
 
-inline void insert (string s)
+int n, m;
+
+int find (int x)
 {
-    int now = 0;
-    for (int i = 0; i < s.size(); i++)
+    if (fa[x] != x)
     {
-        int ch = s[i] - 'a';
-        if (not trie[now][ch])
-        {
-            id++;
-            trie[now][ch] = id;
-        }
-        now = trie[now][ch];
+        return fa[x] = find (fa[x]);
     }
+    return fa[x];
 }
 
-inline void query(string s)
+inline void init ()
 {
-    int now = 0;
-    for (int i = 0; i < s.size(); i++)
+    for (int i = 1; i <= n; i++)
     {
-        int ch = s[i] - 'a';
-        if (not trie[now][ch])
-        {
-            return 0;
-        }
-        now = trie[now][ch];
+        fa[i] = i;
     }
-    return cnt[now];
 }
 
 int main()
 {
-    
+
     return 0;
 }

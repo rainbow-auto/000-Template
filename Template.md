@@ -528,3 +528,30 @@ inline void query(string s)
     return cnt[now];
 }
 ```
+
+### 并查集
+
+```cpp
+const int maxn = 100005;
+int fa[maxn];
+
+int n, m;
+
+int find (int x)
+{
+    if (fa[x] != x)
+    {
+        return fa[x] = find (fa[x]);
+    }
+    return fa[x];
+}
+
+inline void init ()
+{
+    for (int i = 1; i <= n; i++)
+    {
+        fa[i] = i;
+    }
+}
+
+```
