@@ -33,22 +33,44 @@ namespace Reader
     }
 }
 
-const int maxn = 100005;
 
-int k;
-int n;
-int a[maxn];
+const int maxn = 100005;
+int trie[maxn][26];
+int cnt[maxn];
+int id;
+
+inline void insert (string s)
+{
+    int now = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        int ch = s[i] - 'a';
+        if (not trie[now][ch])
+        {
+            id++;
+            trie[now][ch] = id;
+        }
+        now = trie[now][ch];
+    }
+}
+
+inline void query(string s)
+{
+    int now = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        int ch = s[i] - 'a';
+        if (not trie[now][ch])
+        {
+            return 0;
+        }
+        now = trie[now][ch];
+    }
+    return cnt[now];
+}
 
 int main()
 {
-    stack<int> s;
-    for (int i = 1; i <= n; i++)
-    {
-        while (not s.empty() and a[s.top()] >= a[i]) s.pop();
-        if (s.empty()) cout << "-1 ";
-        else cout << s.top() << " ";
-        s.push(i);
-    }
-
+    
     return 0;
 }

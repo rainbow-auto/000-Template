@@ -489,3 +489,42 @@ for (int i = 1; i <= n; i++)
     s.push(i);
 }
 ```
+
+### Trie 字典树
+
+```cpp
+const int maxn = 100005;
+int trie[maxn][26];
+int cnt[maxn];
+int id;
+
+inline void insert (string s)
+{
+    int now = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        int ch = s[i] - 'a';
+        if (not trie[now][ch])
+        {
+            id++;
+            trie[now][ch] = id;
+        }
+        now = trie[now][ch];
+    }
+}
+
+inline void query(string s)
+{
+    int now = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        int ch = s[i] - 'a';
+        if (not trie[now][ch])
+        {
+            return 0;
+        }
+        now = trie[now][ch];
+    }
+    return cnt[now];
+}
+```
