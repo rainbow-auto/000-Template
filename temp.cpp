@@ -33,26 +33,41 @@ namespace Reader
     }
 }
 
+const int maxn = 1000010;
+int n;
 
-const int maxn = 100005;
-int fa[maxn];
+int h[maxn];
+int ph[maxn]; // 第k个插入到点的位置
+int hp[maxn]; // 第i个点是第几个插入的
+int siz;
 
-int n, m;
-
-int find (int x)
+inline void heap_swap (int a, int b)
 {
-    if (fa[x] != x)
-    {
-        return fa[x] = find (fa[x]);
-    }
-    return fa[x];
+    swap (h[a], h[b]);
+    swap (hp[a], hp[b]);
+    swap (ph[hp[a]], ph[hp[b]]);
 }
 
-inline void init ()
+void up (int x)
 {
-    for (int i = 1; i <= n; i++)
+    if (x / 2 > 0 and h[x] < h[x / 2])
     {
-        fa[i] = i;
+        heap_swap (x, x / 2);
+        up (x / 2);
+    }
+}
+
+void down (int x)
+{
+    int t = x;
+    if (x * 2 <= siz and h[t] > h[x * 2]) t = x * 2;
+    
+    if (x * 2 + 1 <= siz and h[t] > h[x * 2 + 1]) t = x * 2 + 1;
+
+    if (t != x)
+    {
+        heap_swap (x, t);
+        down (t);
     }
 }
 
