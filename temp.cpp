@@ -34,45 +34,19 @@ namespace Reader
 }
 
 const int maxn = 1000010;
-int n;
+int to[maxn], pre[maxn], last[maxn];
+int cnt;
 
-int h[maxn];
-int ph[maxn]; // 第k个插入到点的位置
-int hp[maxn]; // 第i个点是第几个插入的
-int siz;
-
-inline void heap_swap (int a, int b)
+inline void addEdge (int u, int v)
 {
-    swap (h[a], h[b]);
-    swap (hp[a], hp[b]);
-    swap (ph[hp[a]], ph[hp[b]]);
-}
-
-void up (int x)
-{
-    if (x / 2 > 0 and h[x] < h[x / 2])
-    {
-        heap_swap (x, x / 2);
-        up (x / 2);
-    }
-}
-
-void down (int x)
-{
-    int t = x;
-    if (x * 2 <= siz and h[t] > h[x * 2]) t = x * 2;
-    
-    if (x * 2 + 1 <= siz and h[t] > h[x * 2 + 1]) t = x * 2 + 1;
-
-    if (t != x)
-    {
-        heap_swap (x, t);
-        down (t);
-    }
+    cnt ++;
+    to[cnt] = v;
+    pre[cnt] = last[u];
+    last[u] = cnt;
 }
 
 int main()
 {
-
+    
     return 0;
 }

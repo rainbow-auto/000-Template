@@ -598,3 +598,21 @@ void down (int x)
 }
 
 ```
+
+## 图论
+
+### 图的存储
+
+```cpp
+const int maxn = 1000010;
+int to[maxn], pre[maxn], last[maxn];
+int cnt;
+
+inline void addEdge (int u, int v)
+{
+    cnt ++;
+    to[cnt] = v;
+    pre[cnt] = last[u];
+    last[u] = cnt;
+}
+```
