@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <queue>
 #include <string>
 #include <vector>
 #include <list>
@@ -38,53 +39,54 @@ int n, m;
 
 int to[maxn], pre[maxn], last[maxn];
 int cnt;
+int w[maxn];
 
-inline void addEdge (int u, int v)
+inline void addEdge (int u, int v, int ww)
 {
     cnt ++;
     to[cnt] = v;
+    w[cnt] = ww;
     pre[cnt] = last[u];
     last[u] = cnt;
-
-    ind[v] ++;
 }
 
-int ind[maxn];
-vector<int> topsort ()
-{
-    vector<int> ans;
-    queue<int> q;
-    for (int i = 1; i <= n; i++)
+struct Node{
+    int id;
+    int dis;
+    friend bool operator < (Node a, Node b)
     {
-        if (ind[i] == 0)
-        {
-            q.push(i);
-        }
+        return a.dis > b.dis; // priority_queue
     }
+};
 
-    while (not q.empty())
+bool vis[maxn];
+int dis[maxn];
+bool dij (int s)
+{
+    memset (dis, 0x3f, sizeof (dis));
+    dis[s] = 0;
+    priority_queue <Node> q;
+    q.push (Node{s, dis[s]});
+
+    while (not q.empty ())
     {
-        int u = q.front(); q.pop();
-        ans.push_back(u);
-        for (int i = last[u]; i; i = pre[i])
+        int u = q.top().id; q.pop();
+        if (vis[u]) continue;
+        vis[u] = true;
+
+        for (int i = last[u]; i ; i = pre[i])
         {
             int v = to[i];
-            in[v]--;
-            if (in[v] == 0)
+            if (dis[v] > dis[u] + w[i])
             {
-                q.push(v);
+                dis[v] = dis[u] + w[i];
+                q.push (Node{v, dis[v]});
             }
         }
     }
-
-    if (ans.size() == n)
-    {
-        return ans;
-    }
-    else
-    {
-        return vector(1, -1);
-    }
+    
+    if (dis[n] == 0x3f3f3f3f) return false;
+    else return true;
 }
 
 int main()
@@ -96,19 +98,17 @@ int main()
     {
         int u = Reader::read();
         int v = Reader::read();
-
-        addEdge (u, v);        
+        int ww = Reader::read();
+        addEdge (u, v, ww);        
     }
 
-    vector<int> ans = topsort();
-
-    if (ans.front() == -1)
+    if (dij (1))
     {
-
+        cout << dis[n] << endl;
     }
     else
     {
-    
+        cout << "-1" << endl;
     }
 
     return 0;
