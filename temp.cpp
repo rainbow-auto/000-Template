@@ -50,44 +50,51 @@ inline void addEdge (int u, int v, int ww)
     last[u] = cnt;
 }
 
-struct Node{
-    int id;
-    int dis;
-    friend bool operator < (Node a, Node b)
-    {
-        return a.dis > b.dis; // priority_queue
-    }
-};
-
-bool vis[maxn];
+bool inq[maxn];
 int dis[maxn];
-bool dij (int s)
+int times[maxn];
+
+bool SPFA (int s)
 {
+    memset (inq, 0, sizeof (inq));
     memset (dis, 0x3f, sizeof (dis));
     dis[s] = 0;
-    priority_queue <Node> q;
-    q.push (Node{s, dis[s]});
+    queue<int> q;
 
-    while (not q.empty ())
+    for (int i = 1; i <= n; i++)
     {
-        int u = q.top().id; q.pop();
-        if (vis[u]) continue;
-        vis[u] = true;
+        q.push (i);
+        inq[i] = true;
+    }
 
-        for (int i = last[u]; i ; i = pre[i])
+    while (not q.empty())
+    {
+        int u = q.front (); q.pop();
+        inq[u] = false;
+
+        for (int i = last[u]; i; i = pre[i])
         {
             int v = to[i];
             if (dis[v] > dis[u] + w[i])
             {
                 dis[v] = dis[u] + w[i];
-                q.push (Node{v, dis[v]});
-            }
+                times[v] = times[u] + 1;
+                if (times[v] >= n)
+                {
+                    return true; // 产生负环
+                }
+
+                if (not inq[v])
+                {
+                    q.push (v);
+                    inq[v] = true;
+                }
+            }    
         }
     }
-    
-    if (dis[n] == 0x3f3f3f3f) return false;
-    else return true;
+    return false; // 没有负环
 }
+
 
 int main()
 {
@@ -102,13 +109,13 @@ int main()
         addEdge (u, v, ww);        
     }
 
-    if (dij (1))
+    if (SPFA (1))
     {
-        cout << dis[n] << endl;
+        cout << "Yes" << endl;
     }
     else
     {
-        cout << "-1" << endl;
+        cout << "No" << endl;
     }
 
     return 0;
