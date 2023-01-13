@@ -756,3 +756,30 @@ bool SPFA (int s)
 
 
 ```
+
+### 匈牙利算法
+
+```cpp
+
+// 待补充
+
+```
+
+## 数论
+
+### 试除法判素数
+
+```cpp
+bool is_prime (int x)
+{
+    if (x < 2) return false;
+    for (int i = 2; i <= x / i; i++)
+    {
+        if (x % i == 0)
+        {
+            return false;
+        }
+    return true;
+    }
+}
+```
