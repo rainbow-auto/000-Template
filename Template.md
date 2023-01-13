@@ -783,3 +783,32 @@ bool is_prime (int x)
     }
 }
 ```
+
+### 分解质因数
+
+```cpp
+vector < pair<int,int> > prime_fact (int x)
+{
+    vector < pair<int,int> > res;
+    for (int i = 2; i <= x / i; i++)
+    {
+        int s = 0;
+        while (x % i == 0)
+        {
+            x /= i;
+            s ++;
+        }
+        if (s > 0)
+        {
+            res.push_back ({i, s});
+        }
+    }
+    if (x > 1)
+    {
+        res.push_back ({x, 1});
+    }
+
+    return res;
+}
+
+```
