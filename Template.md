@@ -812,3 +812,21 @@ vector < pair<int,int> > prime_fact (int x)
 }
 
 ```
+
+### 线性筛
+
+```cpp
+
+const int maxn = 10000005;
+int primes[maxn], cnt;
+int is_prime[maxn];
+
+void get_prime (int n)
+{
+    for (int i = 2; i <= n; i++)
+    {
+
+    }
+}
+
+```

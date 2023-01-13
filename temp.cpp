@@ -33,33 +33,35 @@ namespace Reader
         return x * flag;
     }
 }
-vector < pair<int,int> > prime_fact (int x)
+
+const int maxn = 10000005;
+int primes[maxn], cnt;
+int is_prime[maxn];
+
+void get_prime (int n)
 {
-    vector < pair<int,int> > res;
-    for (int i = 2; i <= x / i; i++)
+    memset (is_prime, 1, sizeof (is_prime));
+    for (int i = 2; i <= n; i++)
     {
-        int s = 0;
-        while (x % i == 0)
+        if (is_prime[i])
         {
-            x /= i;
-            s ++;
+            primes[++cnt] = i;
         }
-        if (s > 0)
+        for (int j = 1; primes[j] <= n / i; j++)
         {
-            res.push_back ({i, s});           
+            is_prime[primes[j] * i] = false;
+            if (i % primes[j] == 0) break;
         }
     }
-    if (x > 1)
-    {
-        res.push_back ({x, 1});
-    }
-
-    return res;
 }
-
 
 int main()
 {
-    
+    int n = Reader::read();
+
+    get_prime (n);
+
+    cout << cnt << endl;
+
     return 0;
 }
