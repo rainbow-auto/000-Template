@@ -1,539 +1,170 @@
-# Rainbow_auto 的模板
+# OI-TEMPLATE
 
-> powered by CTL 代码来自 acwing.com
+Powered by caotianlang@outlook.com
 
 ## 火车头
 
 ```cpp
 #include <iostream>
-#include <algorithm>
 #include <string>
-#include <vector>
-#include <list>
-#include <stack>
-#include <map>
 #include <set>
-#include <cstdio>
-#include <cstring>
-#include <cmath>
+#include <map>
+#include <vector>
+#include <queue> 
+#include <algorithm>
 
+#include <cstdio>
+#include <cmath>
+#include <cstring>
+#include <cctype>
 using namespace std;
 
-namespace Reader{
-    int read ()
+typedef long long ll;
+#define Debug cout
+
+inline int read ()
+{
+    int res = 0, flag = 1;
+    char ch = getchar ();
+    while (not isdigit(ch)) 
     {
-        char c = getchar ();
-        int x = 0, flag = 1;
-        while (not isdigit (c)) { if (c == '-') flag = -1; c = getchar(); }
-        while (isdigit (c)) { x = x * 10 + c - '0'; c = getchar(); }
-        return x * flag;
+        if (ch == '-') flag = -1;
+        ch = getchar ();
     }
+    while (isdigit(ch))
+    {
+        res = res * 10 + int (ch - '0');
+        ch = getchar ();
+    }
+    return res * flag;
 }
 
 int main ()
 {
 
-    return 0;
+    return;
 }
 ```
 
-## 基础算法
+## 数学
 
-### 快速排序
-
-```cpp
-void QuickSort (int l, int r)
-{
-    if (l >= r)
-    {
-        return;
-    }
-
-    int mid = (l + r) >> 1;
-
-    int x = a[mid];
-    int i = l - 1;
-    int j = r + 1;
-    while (i < j)
-    {
-        do i ++; while (a[i] < x);
-        do j --; while (a[j] > x);
-        if (i < j) swap (a[i], a[j]);
-    }
-
-    QuickSort (l, j);
-    QuickSort (j + 1, r);
-}
-```
-
-### 二分
-
-#### 整数二分
+### 快速幂
 
 ```cpp
-int bsearch1 (int x) // lower_bound (x)
+ll ksm (ll a, ll b, ll p)
 {
-    int l = 1, r = n;
-    while (l < r)
-    {
-        int mid = (l + r) >> 1;
-        if (a[mid] >= x) r = mid;
-        else l = mid + 1;
-    }
-    return l;
-}
-
-int bsearch2 (int x) // upper_bound (x) - 1
-{
-    int l = 1, r = n;
-    while (l < r)
-    {
-        int mid = (l + r + 1) >> 1;
-        if (a[mid] <= x) l = mid;
-        else r = mid - 1;
-    }
-}
-```
-
-#### 浮点数二分
-
-```cpp
-double eps = 1e-9;
-double bsearch_double (double x) // 求x的三次方根
-{
-    double l = min (x, -x), r = max (x, -x);
-    while (r - l > eps)
-    {
-        double mid = (l + r) / 2;
-        if (mid * mid * mid > x) l = mid;
-        else r = mid;
-    }
-    return l;
-}
-```
-
-### 高精度
-
-#### 加法 (高精度+高精度)
-
-```cpp
-vector<int> Add (vector<int> a, vector<int> b)
-{
-    if (a.size() < b.size())
-    {
-        swap (a, b);
-    }
-
-    vector<int> res;
-    int t = 0;
-    for (int i = 0; i < a.size(); i++)
-    {
-        t += a[i];
-        if (i < b.size()) t += b[i];
-        res.push_back (t % 10);
-        t /= 10;
-    }
-
-    if (t) res.push_back(t);
-
+    ll res = 1;
+    for (ll base = a; b; b >>= 1, base *= base, base %= p) 
+        if (b & 1) res *= base, res %= p;
     return res;
 }
 ```
 
-#### 减法 (高精度 - 高精度)
+### gcd / lcm
 
 ```cpp
-bool operator < (vector<int> a, vector<int> b)
+ll gcd (ll a, ll b)
 {
-    if (a.size() != b.size()) return a.size() < b.size();
-    for (int i = a.size() - 1; i >= 0; i --)
-    {
-        if (a[i] != b[i])
-        {
-            return a[i] < b[i];
-        }
-    }
-    return false; // a == b
+    return b ? gcd (b, a % b) : a;
 }
 
-vector<int> Sub(vector<int> a, vector<int> b)
+ll lcm (ll a, ll b)
 {
-    bool flag = false;
-    if (a < b)
-    {
-        flag = true;
-        swap (a, b);
-    }
-
-    vector<int> res;
-
-    int t = 0;
-    for (int i = 0; i < a.size(); i++)
-    {
-        t = a[i] - t;
-        if (i < b.size()) t -= b[i];
-        res.push_back((t + 10) % 10);
-        if (t < 0)
-        {
-            t = 1;
-        }
-        else
-        {
-            t = 0;
-        }
-    }
-
-    while (res.size() > 1 and res.back() == 0) res.pop_back ();
-    if (flag)
-    {
-        res.push_back(-1); // 负数 -1
-    }
-    else
-    {
-        res.push_back(0); // 正数 0
-    }
-    return res;
+    return a * b / gcd (a, b);
 }
 ```
 
-#### 乘法 (高精度\*低精度)
+## 数据结构
+
+### 区间RMQ
+
+#### 前缀和
+
+##### 一维
 
 ```cpp
-vector<int> mul (vector<int> a, int b)
-{
-    vector<int> res;
-    int t = 0;
-    for (int i = 0; i < a.size() or t; i ++)
-    {
-        if (i < a.size()) t += a[i] * b;
-        res.push_back(t % 10);
-        t /= 10;
-    }
-    while (res.size() > 1 and res.back() == 0) res.pop_back();
-}
-
-```
-
-#### 除法 (高精度/低精度)
-
-```cpp
-vector<int> div (vector<int> a, int b, int& r)
-{
-    vector<int> res;
-    r = 0;
-    for (int i = 0; i < a.size(); i ++)
-    {
-        r = r * 10 + a[i];
-        res.push_back (r / b);
-        r %= b;
-    }
-    return res;
-}
-```
-
-### 前缀和
-
-#### 一维
-
-```cpp
-void init ()
+inline void init ()
 {
     for (int i = 1; i <= n; i++)
-    {
-        s[i] = s[i - 1] + a[i];
-    }
+        s[i] = a[i] + s[i - 1];
 }
 
-int sum (int l, int r)
+inline int sum (int l, int r)
 {
     return s[r] - s[l - 1];
 }
 ```
 
-#### 二维
+##### 二维
 
 ```cpp
-int a[maxn][maxn];
-int s[maxn][maxn];
-int n;
 inline void init ()
 {
-    for (int i = 1; i <= n; i ++)
-    {
-        for(int j = 1; j <= m; j++)
-        {
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
             s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1] + a[i][j];
-        }
-    }
 }
 
 inline int sum (int x1, int y1, int x2, int y2)
 {
-    return s[x2][y2] - s[x2][y1 - 1] - s[x1 - 1][y2] + s[x1 - 1][x2 - 1];
+    return s[x2][y2] - s[x1][y2] - s[x2][y1] + s[x1][y2];
 }
 ```
 
-### 差分
-
-#### 一维差分
+#### 树状数组
 
 ```cpp
-inline void insert (int l, int r, int x)
+const int maxn = 10005;
+int n;
+int a[maxn];
+int s[maxn];
+int tr[maxn];
+
+inline int lowbit (int x) {return x & (-x);}
+
+inline void build ()
 {
-    sub[l] += x;
-    sub[r + 1] -= x;
+    for (int i = 1; i <= n; i++)
+    {
+        s[i] = s[i - 1] + a[i];
+        tr[i] = s[i] - s[i - lowbit(i)];
+    }
 }
+
+inline int add (int pos, int x)
+{
+    for (int i = pos; i <= n; i += lowbit (i)) tr[i] += x;
+}
+
+inline void sum (int pos)
+{
+    int res = 0;
+    for (int i = 1; i <= pos; i += lowbit(i)) res += tr[i];
+    return res;
+}
+```
+
+#### 线段树
+
+```cpp
+// 
+```
+
+#### 分块
+
+### 并查集
+
+```cpp
+int n;
+int fa[maxn];
 
 inline void init ()
 {
     for (int i = 1; i <= n; i++)
     {
-        insert(i, i, a[i]);
-    }
+        fa[i] = i;
+    }    
 }
-
-inline void build_sum ()
-{
-    for (int i = 1; i <= n; i++)
-    {
-        sum[i] = sum[i - 1] + sub[i];
-    }
-}
-```
-
-#### 二维差分
-
-```cpp
-int d[maxn][maxn]; // 差分数组
-int s[maxn][maxn]; // 前缀和数组
-
-int a[maxn][maxn]; // 原数组
-
-inline void insert (int x1, int y1, int x2, int y2, int x)
-{
-    d[x2 + 1][y2 + 1] += x;
-    d[x2 + 1][y1] -= x;
-    d[x1][y2 + 1] -= x;
-    d[x1][y1] += x;
-}
-
-void init ()
-{
-    for (int i = 1; i <= n; i++)
-    {
-        for (int j = 1; j <= m; j++)
-        {
-            insert (i, j, i, j, a[i][j]);
-        }
-    }
-}
-
-void build_sum ()
-{
-    for (int i = 1; i <= n; i++)
-    {
-        for (int j = 1; j <= m; j++)
-        {
-            s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1] + d[i][j];
-        }
-    }
-}
-```
-
-### 双指针法
-
-```cpp
-inline void two_pointers ()
-{
-    for (int i = 0, j = 0; i < n; i++)
-    {
-        while (j < i and check (j, i))
-        {
-            j++;
-        }
-
-        // 具体逻辑
-    }
-}
-```
-
-### 位运算
-
-```cpp
-inline int lowbit(int x)
-{
-    return x & (-x);
-}
-
-inline int get_bit (int x, int k)
-{
-    return (x >> k) & 1;
-}
-```
-
-### 离散化
-
-```cpp
-vector<int> all; // 所有需要离散化的数
-
-inline void discretize ()
-{
-    sort (all.begin(), all.end());
-    all.erase (unique (all.begin(), all.end()), all.end());
-}
-
-inline int find (int x) // 原来值为x, 对应值为find(x)
-{
-    int l = 0, r = all.size() - 1;
-    while (l < r)
-    {
-        int mid = (l + r) >> 1;
-        if (all[mid] >= x) r = mid;
-        else l = mid - 1;
-    }
-    return l + 1; // 下标从1开始则 + 1
-}
-```
-
-### 区间合并
-
-```cpp
-typedef pair<int, int> PII;
-
-int n;
-vector<PII> ranges;
-
-inline void merge (vector<PII>& segs)
-{
-    vector<PII> res;
-    sort (segs.begin(), segs.end());
-
-    int st = -2e9, ed = -2e9;
-    for (auto seg : segs)
-    {
-        if (seg.first > ed)
-        {
-            if (st != -2e9) res.push_back ({st, ed});
-            st = seg.first;
-            ed = seg.second;
-        }
-        else
-        {
-            ed = max (ed, seg.second);
-        }
-    }
-    if (st != -2e9) res.push_back ({st, ed});
-
-    segs = res;
-}
-
-```
-
-### KMP
-
-```cpp
-n = Reader::read();
-for (int i = 1; i <= n; i++) cin >> p[i];
-
-m = Reader::read();
-for (int i = 1; i <= m; i++) cin >> s[i];
-
-for (int i = 2, j = 0; i <= n; i++)
-{
-    while (j and p[j + 1] != p[i]) j = nxt[j];
-    if (p[j + 1] == p[i]) j++;
-    nxt[i] = j;
-}
-
-for (int i = 1, j = 0; i <= m; i++)
-{
-    while (j and p[j + 1] != s[i]) j = nxt[j];
-    if (p[j + 1] == s[i]) j++;
-    if (j == n)
-    {
-        cout << i - n << " ";
-        j = nxt[j];
-    }
-}
-```
-
-## 基础数据结构
-
-### 单调队列
-
-```cpp
-deque<int> q;
-for (int i = 1; i <= n; i++)
-{
-    while (not q.empty() and i - q.back() > k) q.pop_back();
-    while (not q.empty() and a[q.front()] >= a[i]) q.pop_front();
-    q.push_front(i);
-    if (i >= k)
-    {
-        cout << a[q.back()] << endl;
-    }
-}
-```
-
-### 单调栈
-
-```cpp
-stack<int> s;
-for (int i = 1; i <= n; i++)
-{
-    while (not s.empty() and a[s.top()] >= a[i]) s.pop();
-    if (s.empty()) cout << "-1 ";
-    else cout << s.top() << " ";
-    s.push(i);
-}
-```
-
-### Trie 字典树
-
-```cpp
-const int maxn = 100005;
-int trie[maxn][26];
-int cnt[maxn];
-int id;
-
-inline void insert (string s)
-{
-    int now = 0;
-    for (int i = 0; i < s.size(); i++)
-    {
-        int ch = s[i] - 'a';
-        if (not trie[now][ch])
-        {
-            id++;
-            trie[now][ch] = id;
-        }
-        now = trie[now][ch];
-    }
-}
-
-inline void query(string s)
-{
-    int now = 0;
-    for (int i = 0; i < s.size(); i++)
-    {
-        int ch = s[i] - 'a';
-        if (not trie[now][ch])
-        {
-            return 0;
-        }
-        now = trie[now][ch];
-    }
-    return cnt[now];
-}
-```
-
-### 并查集
-
-```cpp
-const int maxn = 100005;
-int fa[maxn];
-
-int n, m;
 
 int find (int x)
 {
@@ -543,117 +174,24 @@ int find (int x)
     }
     return fa[x];
 }
-
-inline void init ()
-{
-    for (int i = 1; i <= n; i++)
-    {
-        fa[i] = i;
-    }
-}
-
-```
-
-### 堆
-
-```cpp
-const int maxn = 1000010;
-int n;
-
-int h[maxn];
-int ph[maxn]; // 第k个插入到点的位置
-int hp[maxn]; // 第i个点是第几个插入的
-int siz;
-
-inline void heap_swap (int a, int b)
-{
-    swap (h[a], h[b]);
-    swap (hp[a], hp[b]);
-    swap (ph[hp[a]], ph[hp[b]]);
-}
-
-void up (int x)
-{
-    if (x / 2 > 0 and h[x] < h[x / 2])
-    {
-        heap_swap (x, x / 2);
-        up (x / 2);
-    }
-}
-
-void down (int x)
-{
-    int t = x;
-    if (x * 2 <= siz and h[t] > h[x * 2]) t = x * 2;
-
-    if (x * 2 + 1 <= siz and h[t] > h[x * 2 + 1]) t = x * 2 + 1;
-
-    if (t != x)
-    {
-        heap_swap (x, t);
-        down (t);
-    }
-}
-
 ```
 
 ## 图论
 
-### 邻接表/链式前向星
+### 前向星
 
 ```cpp
-const int maxn = 1000010;
 int to[maxn], pre[maxn], last[maxn];
+int w[maxn];
 int cnt;
 
-inline void addEdge (int u, int v)
+inline void addEdge (int u, int v, int ww)
 {
     cnt ++;
     to[cnt] = v;
     pre[cnt] = last[u];
+    w[cnt] = ww;
     last[u] = cnt;
-}
-```
-
-### 拓扑排序
-
-```cpp
-int ind[maxn];
-vector<int> topsort ()
-{
-    vector<int> ans;
-    queue<int> q;
-    for (int i = 1; i <= n; i++)
-    {
-        if (ind[i] == 0)
-        {
-            q.push(i);
-        }
-    }
-
-    while (not q.empty())
-    {
-        int u = q.front(); q.pop();
-        ans.push_back(u);
-        for (int i = last[u]; i; i = pre[i])
-        {
-            int v = to[i];
-            in[v]--;
-            if (in[v] == 0)
-            {
-                q.push(v);
-            }
-        }
-    }
-
-    if (ans.size() == n)
-    {
-        return ans;
-    }
-    else
-    {
-        return vector(1, -1);
-    }
 }
 ```
 
@@ -667,27 +205,25 @@ struct Node{
     int dis;
     friend bool operator < (Node a, Node b)
     {
-        return a.dis > b.dis; // priority_queue
+        return a.dis > b.dis;
     }
 };
 
-bool vis[maxn];
 int dis[maxn];
-bool dij (int s)
+bool vis[maxn];
+void dij (int s)
 {
-    memset (dis, 0x3f, sizeof (dis));
-    memset (vis, 0, sizeof (vis));
-    dis[s] = 0;
     priority_queue <Node> q;
+    memset (vis, 0, sizeof (vis));
+    memest (dis, 0x3f, sizeo (dis));
+    dis[s] = 0;
     q.push (Node{s, dis[s]});
-
     while (not q.empty ())
     {
-        int u = q.top().id; q.pop();
+        int u = q.top().id; q.pop ();
         if (vis[u]) continue;
         vis[u] = true;
-
-        for (int i = last[u]; i ; i = pre[i])
+        for (itnt i = last[u]; i; i = pre[i])
         {
             int v = to[i];
             if (dis[v] > dis[u] + w[i])
@@ -697,249 +233,218 @@ bool dij (int s)
             }
         }
     }
-
-    if (dis[n] == 0x3f3f3f3f) return false;
-    else return true;
+    return;
 }
 ```
 
-#### SPFA 判断负环
+#### SPFA (判断负环).
 
 ```cpp
-bool inq[maxn];
 int dis[maxn];
-int times[maxn];
+int times[maxn]; //次数
+bool inq[maxn];
 
-bool SPFA (int s)
+queue <int> q;
+
+bool spfa (int s)
 {
+    memset (dis, 0, sizeof (dis));
     memset (inq, 0, sizeof (inq));
-    memset (dis, 0x3f, sizeof (dis));
+    q.push (s);
     dis[s] = 0;
-    queue<int> q;
 
-    for (int i = 1; i <= n; i++)
+    while (not q.empty ())
     {
-        q.push (i);
-        inq[i] = true;
-    }
-
-    while (not q.empty())
-    {
-        int u = q.front (); q.pop();
+        int u = q.front (); q.pop ();
         inq[u] = false;
-
-        for (int i = last[u]; i; i = pre[i])
+        for (int i = last[u]; i ; i = pre[i])
         {
             int v = to[i];
             if (dis[v] > dis[u] + w[i])
             {
                 dis[v] = dis[u] + w[i];
-                times[v] = times[u] + 1;
-                if (times[v] >= n)
-                {
-                    return true; // 产生负环
-                }
-
                 if (not inq[v])
                 {
                     q.push (v);
                     inq[v] = true;
+                    times[v] ++;
+                    if (times [v] > n) return false;
                 }
             }
         }
     }
-    return false; // 没有负环
+    return false; //没有负环
 }
 ```
 
-### 匈牙利算法
+##### 差分约束
+
+如果 `a + b <= c` 则 `addEdge (b, a, c);`  
+添加超级源点0后 `spfa (0)` 判断负环  
+有负环则无解，无负环则有解  
+其中的一组解是dis[]
+
+### 最小生成树
+
+kruskal
 
 ```cpp
+// 并查集
 
-// 待补充
-
-```
-
-## 数论
-
-### 试除法判素数
-
-```cpp
-bool is_prime (int x)
+int fa[maxn];
+inline void init ()
 {
-    if (x < 2) return false;
-    for (int i = 2; i <= x / i; i++)
+    for (int i = 1; i <= n; i++)
     {
-        if (x % i == 0)
+        fa[i] = i;
+    }
+}
+
+int find (int x)
+{
+    if (fa[x] != x)
+    {
+        return fa[x] = find (fa[x]);
+    }
+    return fa[x];
+}
+
+// kruskal
+struct Edge{
+    int u, v;
+    int w;
+    friend bool operator < (Edge a, Edge b)
+    {
+        return a.w < b.w;
+    }
+};
+Edge es[maxn];
+
+inline int kruskal ()
+{
+    int tot = 0;
+    int res = 0;
+    sort (es + 1, es + m + 1)
+    for (int i = 1; i <= m; i++)
+    {
+        int u_root = find (es[i].u);
+        int v_root = find (es[i].v);
+        if (u_root != v_root)
         {
-            return false;
+            fa[v_root] = u_root;
+            tot ++;
+            res += es[i].w;
         }
-    return true;
-    }
-}
-```
-
-### 分解质因数
-
-```cpp
-vector < pair<int,int> > prime_fact (int x)
-{
-    vector < pair<int,int> > res;
-    for (int i = 2; i <= x / i; i++)
-    {
-        int s = 0;
-        while (x % i == 0)
+        if (tot == n - 1)
         {
-            x /= i;
-            s ++;
-        }
-        if (s > 0)
-        {
-            res.push_back ({i, s});
-        }
-    }
-    if (x > 1)
-    {
-        res.push_back ({x, 1});
-    }
-
-    return res;
-}
-```
-
-### 线性筛
-
-```cpp
-const int maxn = 10000005;
-int primes[maxn], cnt;
-int is_prime[maxn];
-
-void get_prime (int n)
-{
-    for (int i = 2; i <= n; i++)
-    {
-
-    }
-}
-```
-
-### 试除法求约数
-
-```cpp
-
-vector<int> get_divisors (int x)
-{
-    vector<int> res;
-    for (int i = 1; i <= x / i; i++)
-    {
-        if (x % i == 0)
-        {
-            res.push_back (i);
-            if (i != x / i) res.push_back (x / i);
+            return res;
         }
     }
-    sort (res.begin(), res.end());
-    return res;
+    return -1;
 }
-
 ```
 
-### 约数个数
-
-$$ 任何一个约数 d 可以表示成 \prod \limits_{i = 1} ^ k p_i ^ {\beta_i} $$
-$$ 每一个 \beta 都可以在0到\alpha_i中选择 $$
-$$ ans = (\alpha_1 + 1 )(\alpha_2 + 1) ... (\alpha_n + 1) $$
-
+### tarjan
+#### 强连通分量
 ```cpp
-const int mod = 1e9 + 7;
-
-unordered_map<int, int> h;
-void prime_fact (int x)
+int cnt;
+int to[maxn], pre[maxn], last[maxn];
+inline void addEdge (int u, int v)
 {
-    for (int i = 2; i <= x / i; i++)
+    cnt ++;
+    to[cnt] = v;
+    pre[cnt] = last[u];
+    last[u] = cnt;
+}
+
+int stk[maxn], spos;
+bool ins[maxn];
+int scc[maxn], gpos;
+int dfn[maxn], low[maxn], npos;
+
+void tarjan (int now, int fa)
+{
+    dfn[now] = low[now] = ++npos;
+    stk[++spos] = now;
+    ins[now] = true;
+
+    for (int i = last[now]; i ; i = pre[i])
     {
-        while (x % i == 0)
+        int t = to[i];
+        if (t == fa) continue;
+        if (not dfn[t])
         {
-            h[i] ++;
-            x /= i;
+            tarjan (t, now); 
+            low[now] = min (low[now], low[t]);
         }
-    }   
-    if (x > 1)
-    {
-        h[x] ++;
-    } 
-}
-
-int main ()
-{
-    int n = Reader::read();
-
-    while (n --) 
-    {
-        int x = Reader::read();
-        prime_fact (x);
-    }
-
-    long long ans = 1;
-    for (auto i : h) ans = ans * (i.second + 1) % mod;
-
-    cout << ans << endl;
-
-    return 0;
-}
-```
-
-### 约数之和
-
-```cpp
-const int mod = 1e9 + 7;
-
-unordered_map <int, int> h;
-void prime_fact (int x)
-{
-    for (int i = 2; i <= x / i; i++)
-    {
-        while (x % i == 0)
+        else if (ins[t])
         {
-            h[i]++;
-            x /= i;
+            low[now] = min (low[now], dfn[t]);
         }
     }
-    if (x > 1) h[x] ++;
+    if (dfn[now] == low[now])
+    {
+        ++ gpos;
+        do {
+            scc[stk[spos]] = gpos;
+            sz[gpos] ++;
+            ins[stk[spos]] = 0;
+            spos --;
+        } while (stk[spos] != now);
+    }
 }
 
-int main ()
-{
-    int n = Reader::read();
-    while (n --)
-    {
-        int x = Reader::read();
-        
-        prime_fact (x);
-    }
-
-    long long ans = 1;
-    for (auto x : h)
-    {
-        long long t = 1;
-        for (int i = 1; i <= x.second; i++)
-        {
-            t = (t * x.first + 1) % mod;
-        }
-        ans = (ans * t) % mod;
-    }
-
-    cout << ans << endl;
-
-    return 0;
-}
 ```
 
-### gcd
+#### 缩点
+
 ```cpp
-int gcd (int a, int b)
+int cnt;
+int to[maxn], pre[maxn], last[maxn];
+inline void addEdge (int u, int v)
 {
-    return b ? gcd (b, a % b) : a;
+    cnt ++;
+    to[cnt] = v;
+    pre[cnt] = last[u];
+    last[u] = cnt;
 }
+
+int dfn[maxn], low[maxn], npos;
+int scc[maxn], gpos;
+int s[maxn], spos;
+
+
 ```
-> 小技巧：gcd 不用背 ctrl + 单击`__gcd`就可以看到stl algorithm 中的gcd实现 ~~不过gcd也挺好背的~~
+
+#### 割点
+
+#### 桥
+
+### lca
+
+### 树链剖分
+
+## 基础
+### 高精度 *毒瘤*
+```cpp
+
+```
+### 二分答案
+
+
+## DP
+### 线性DP
+
+### 背包
+
+### 树形DP
+
+### 区间DP
+
+### 状压DP
+
+### 插头DP
+
+
+
+## 字符串
