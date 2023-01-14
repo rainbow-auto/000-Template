@@ -888,3 +888,49 @@ int main ()
     return 0;
 }
 ```
+
+### 约数之和
+
+```cpp
+const int mod = 1e9 + 7;
+
+unordered_map <int, int> h;
+void prime_fact (int x)
+{
+    for (int i = 2; i <= x / i; i++)
+    {
+        while (x % i == 0)
+        {
+            h[i]++;
+            x /= i;
+        }
+    }
+    if (x > 1) h[x] ++;
+}
+
+int main ()
+{
+    int n = Reader::read();
+    while (n --)
+    {
+        int x = Reader::read();
+        
+        prime_fact (x);
+    }
+
+    long long ans = 1;
+    for (auto x : h)
+    {
+        long long t = 1;
+        for (int i = 1; i <= x.second; i++)
+        {
+            t = (t * x.first + 1) % mod;
+        }
+        ans = (ans * t) % mod;
+    }
+
+    cout << ans << endl;
+
+    return 0;
+}
+```
