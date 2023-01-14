@@ -843,3 +843,48 @@ vector<int> get_divisors (int x)
 }
 
 ```
+
+### 约数个数
+
+$$ 任何一个约数 d 可以表示成 \prod \limits_{i = 1} ^ k p_i ^ {\beta_i} $$
+$$ 每一个 \beta 都可以在0到\alpha_i中选择 $$
+$$ ans = (\alpha_1 + 1 )(\alpha_2 + 1) ... (\alpha_n + 1) $$
+
+```cpp
+const int mod = 1e9 + 7;
+
+unordered_map<int, int> h;
+void prime_fact (int x)
+{
+    for (int i = 2; i <= x / i; i++)
+    {
+        while (x % i == 0)
+        {
+            h[i] ++;
+            x /= i;
+        }
+    }   
+    if (x > 1)
+    {
+        h[x] ++;
+    } 
+}
+
+int main ()
+{
+    int n = Reader::read();
+
+    while (n --) 
+    {
+        int x = Reader::read();
+        prime_fact (x);
+    }
+
+    long long ans = 1;
+    for (auto i : h) ans = ans * (i.second + 1) % mod;
+
+    cout << ans << endl;
+
+    return 0;
+}
+```

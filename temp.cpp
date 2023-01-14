@@ -34,36 +34,39 @@ namespace Reader
     }
 }
 
-vector<int> get_divisors (int x)
+const int mod = 1e9 + 7;
+
+unordered_map<int, int> h;
+void prime_fact (int x)
 {
-    vector<int> res;
-    for (int i = 1; i <= x / i; i++)
+    for (int i = 2; i <= x / i; i++)
     {
-        if (x % i == 0)
+        while (x % i == 0)
         {
-            res.push_back (i);
-            if (i != x / i) res.push_back (x / i);
+            h[i] ++;
+            x /= i;
         }
-    }
-    sort (res.begin(), res.end());
-    return res;
+    }   
+    if (x > 1)
+    {
+        h[x] ++;
+    } 
 }
 
-int main()
+int main ()
 {
     int n = Reader::read();
-    
-    while (n --)
+
+    while (n --) 
     {
         int x = Reader::read();
-        vector<int> res = get_divisors(x);
-
-        for (int i = 0; i < res.size(); i++)
-        {
-            cout << res[i] << " ";
-        }
-        cout << endl;
+        prime_fact (x);
     }
+
+    long long ans = 1;
+    for (auto i : h) ans = ans * (i.second + 1) % mod;
+
+    cout << ans << endl;
 
     return 0;
 }
