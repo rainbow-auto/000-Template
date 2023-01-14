@@ -34,34 +34,36 @@ namespace Reader
     }
 }
 
-const int maxn = 10000005;
-int primes[maxn], cnt;
-int is_prime[maxn];
-
-void get_prime (int n)
+vector<int> get_divisors (int x)
 {
-    memset (is_prime, 1, sizeof (is_prime));
-    for (int i = 2; i <= n; i++)
+    vector<int> res;
+    for (int i = 1; i <= x / i; i++)
     {
-        if (is_prime[i])
+        if (x % i == 0)
         {
-            primes[++cnt] = i;
-        }
-        for (int j = 1; primes[j] <= n / i; j++)
-        {
-            is_prime[primes[j] * i] = false;
-            if (i % primes[j] == 0) break;
+            res.push_back (i);
+            if (i != x / i) res.push_back (x / i);
         }
     }
+    sort (res.begin(), res.end());
+    return res;
 }
 
 int main()
 {
     int n = Reader::read();
+    
+    while (n --)
+    {
+        int x = Reader::read();
+        vector<int> res = get_divisors(x);
 
-    get_prime (n);
-
-    cout << cnt << endl;
+        for (int i = 0; i < res.size(); i++)
+        {
+            cout << res[i] << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }

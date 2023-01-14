@@ -217,7 +217,6 @@ vector<int> mul (vector<int> a, int b)
 #### 除法 (高精度/低精度)
 
 ```cpp
-
 vector<int> div (vector<int> a, int b, int& r)
 {
     vector<int> res;
@@ -230,7 +229,6 @@ vector<int> div (vector<int> a, int b, int& r)
     }
     return res;
 }
-
 ```
 
 ### 前缀和
@@ -708,7 +706,6 @@ bool dij (int s)
 #### SPFA 判断负环
 
 ```cpp
-
 bool inq[maxn];
 int dis[maxn];
 int times[maxn];
@@ -753,8 +750,6 @@ bool SPFA (int s)
     }
     return false; // 没有负环
 }
-
-
 ```
 
 ### 匈牙利算法
@@ -810,13 +805,11 @@ vector < pair<int,int> > prime_fact (int x)
 
     return res;
 }
-
 ```
 
 ### 线性筛
 
 ```cpp
-
 const int maxn = 10000005;
 int primes[maxn], cnt;
 int is_prime[maxn];
@@ -827,6 +820,26 @@ void get_prime (int n)
     {
 
     }
+}
+```
+
+### 试除法求约数
+
+```cpp
+
+vector<int> get_divisors (int x)
+{
+    vector<int> res;
+    for (int i = 1; i <= x / i; i++)
+    {
+        if (x % i == 0)
+        {
+            res.push_back (i);
+            if (i != x / i) res.push_back (x / i);
+        }
+    }
+    sort (res.begin(), res.end());
+    return res;
 }
 
 ```
