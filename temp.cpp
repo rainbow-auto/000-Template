@@ -24,21 +24,29 @@ namespace Reader{
     }
 }
 
-int gcd (int a, int b)
+int phi (int x)
 {
-    return b ? gcd (b, a % b) : a;
+    int res = x;
+    for (int i = 2; i <= x / i; i++)
+    {
+        if (x % i == 0)
+        {
+            res = res / i * (i - 1);
+            while (x % i == 0) x /= i;
+        }
+    }
+    if (x > 1) res = res / x * (x - 1);
+    return res;
 }
 
 int main ()
 {
     int n = Reader::read();
-    
-    while (n --)
+    for (int i = 1; i <= n; i++)
     {
-        int a = Reader::read();
-        int b = Reader::read();
-        cout << gcd(a, b) << endl;
+        int x = Reader::read();
+        cout << phi (x) << endl;
     }
-    
+
     return 0;
 }

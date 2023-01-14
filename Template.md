@@ -943,3 +943,22 @@ int gcd (int a, int b)
 }
 ```
 > 小技巧：gcd 不用背 ctrl + 单击`__gcd`就可以看到stl algorithm 中的gcd实现 ~~不过gcd也挺好背的~~
+
+### 欧拉函数
+
+```cpp
+int phi (int x)
+{
+    int res = x;
+    for (int i = 2; i <= x / i; i++)
+    {
+        if (x % i == 0)
+        {
+            res = res / i * (i - 1);
+            while (x % i == 0) x /= i;
+        }
+    }
+    if (x > 1) res = res / x * (x - 1);
+    return res;
+}
+```
