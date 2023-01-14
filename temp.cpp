@@ -10,7 +10,6 @@
 #include <cstring>
 #include <cmath>
 #include <queue>
-#include <unordered_map>
 
 using namespace std;
 
@@ -25,44 +24,21 @@ namespace Reader{
     }
 }
 
-const int mod = 1e9 + 7;
-
-unordered_map <int, int> h;
-void prime_fact (int x)
+int gcd (int a, int b)
 {
-    for (int i = 2; i <= x / i; i++)
-    {
-        while (x % i == 0)
-        {
-            h[i]++;
-            x /= i;
-        }
-    }
-    if (x > 1) h[x] ++;
+    return b ? gcd (b, a % b) : a;
 }
 
 int main ()
 {
     int n = Reader::read();
+    
     while (n --)
     {
-        int x = Reader::read();
-        
-        prime_fact (x);
+        int a = Reader::read();
+        int b = Reader::read();
+        cout << gcd(a, b) << endl;
     }
-
-    long long ans = 1;
-    for (auto x : h)
-    {
-        long long t = 1;
-        for (int i = 1; i <= x.second; i++)
-        {
-            t = (t * x.first + 1) % mod;
-        }
-        ans = (ans * t) % mod;
-    }
-
-    cout << ans << endl;
-
+    
     return 0;
 }

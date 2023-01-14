@@ -934,3 +934,12 @@ int main ()
     return 0;
 }
 ```
+
+### gcd
+```cpp
+int gcd (int a, int b)
+{
+    return b ? gcd (b, a % b) : a;
+}
+```
+> 小技巧：gcd 不用背 ctrl + 单击`__gcd`就可以看到stl algorithm 中的gcd实现 ~~不过gcd也挺好背的~~
