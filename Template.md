@@ -978,3 +978,25 @@ ll exgcd (ll a, ll b, ll& x, ll& y)
     return res;
 }
 ```
+
+### 中国剩余定理
+
+```cpp
+ll crt ()
+{
+    mul = 1;
+    for (int i = 1; i <= n; i++) mul *= a[i];
+
+    ll ans = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        ll m = mul / a[i];
+        ll mr = 0, y = 0;
+        exgcd (m, a[i], mr, y);
+        mr = mr < 0 ? mr + a[i] : mr;
+        ans += b[i] * m * mr; 
+    }
+    return ans % mul;
+}
+
+```
