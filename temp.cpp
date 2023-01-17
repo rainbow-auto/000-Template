@@ -24,29 +24,19 @@ namespace Reader{
     }
 }
 
-int phi (int x)
+ll exgcd (ll a, ll b, ll& x, ll& y)
 {
-    int res = x;
-    for (int i = 2; i <= x / i; i++)
+    if (not b)
     {
-        if (x % i == 0)
-        {
-            res = res / i * (i - 1);
-            while (x % i == 0) x /= i;
-        }
-    }
-    if (x > 1) res = res / x * (x - 1);
+        x = 1, y = 0;
+        return a;
+    }    
+    ll res = exgcd (b, a % b, y, x);
+    y -= x * (a / b);
     return res;
 }
 
 int main ()
 {
-    int n = Reader::read();
-    for (int i = 1; i <= n; i++)
-    {
-        int x = Reader::read();
-        cout << phi (x) << endl;
-    }
-
     return 0;
 }

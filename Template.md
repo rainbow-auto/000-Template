@@ -962,3 +962,19 @@ int phi (int x)
     return res;
 }
 ```
+
+### 扩展欧几里得算法
+
+```cpp
+ll exgcd (ll a, ll b, ll& x, ll& y)
+{
+    if (not b)
+    {
+        x = 1, y = 0;
+        return a;
+    }    
+    ll res = exgcd (b, a % b, y, x);
+    y -= x * (a / b);
+    return res;
+}
+```
