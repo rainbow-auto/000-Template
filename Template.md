@@ -1000,3 +1000,74 @@ ll crt ()
 }
 
 ```
+
+### 扩展中国剩余定理
+
+```cpp
+typedef __int128 ll;
+const int maxn = 100005;
+
+struct Equation
+{
+	ll r, m;
+	bool ok;
+}eq[maxn];
+int n;
+
+namespace exCRT
+{
+	ll exgcd (ll a, ll b, ll& x, ll& y)
+	{
+		if (not b)
+		{
+			x = 1, y = 0;
+			return a;
+		}
+		ll res = exgcd (b, a % b, y, x);
+		y -= a / b * x;
+		return res;
+	}
+
+	ll gcd (ll a, ll b)
+	{
+		if (not b) return a;
+		else return gcd (b, a % b);
+	}
+
+	ll lcm (ll a, ll b)
+	{
+		return a * b / gcd (a, b);
+	}
+
+	Equation merge (Equation e1, Equation e2)
+	{
+		ll r1 = e1.r, m1 = e1.m;
+		ll r2 = e2.r, m2 = e2.m;
+		
+		ll x, y;
+		ll d = exgcd (m1, m2, x, y);
+		
+		ll c = r2 - r1;
+		if (c % d != 0) return Equation{0, 0, false};
+		
+		ll t0 = x * c / d % (m2 / d);
+		if (t0 < 0) t0 += m2 / d;
+	
+		ll em = lcm (m1, m2);
+		ll er = (m1 * t0 + r1) % em;
+		if (er < 0) er += em;
+		return Equation{er, em, true};		
+	}
+
+	ll exCRT ()
+	{
+		Equation curr = eq[1];
+		for (int i = 2; i <= n; i++)
+		{
+			curr = merge (curr, eq[i]);
+			if (not curr.ok) return -1;
+		}
+		return curr.r % curr.m;
+	}
+}
+```
