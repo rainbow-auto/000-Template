@@ -33,84 +33,97 @@ namespace Reader
 	}
 }
 
-typedef __int128 ll;
-const int maxn = 100005;
+const double eps = 1e-6;
+const int maxn = 105;
 
-struct Equation
-{
-	ll r, m;
-	bool ok;
-}eq[maxn];
 int n;
+double a[maxn][maxn];
 
-namespace exCRT
+int gauss ()
 {
-	ll exgcd (ll a, ll b, ll& x, ll& y)
+	int r = 0;
+	for (int c = 0; c < n; c ++)
 	{
-		if (not b)
+		int t = r;
+		for (int i = r; i < n; i++)
 		{
-			x = 1, y = 0;
-			return a;
+			if (fabs (a[i][c]) > fabs (a[t][c]))
+			{
+				t = i;
+			}
 		}
-		ll res = exgcd (b, a % b, y, x);
-		y -= a / b * x;
-		return res;
-	}
-
-	ll gcd (ll a, ll b)
-	{
-		if (not b) return a;
-		else return gcd (b, a % b);
-	}
-
-	ll lcm (ll a, ll b)
-	{
-		return a * b / gcd (a, b);
-	}
-
-	Equation merge (Equation e1, Equation e2)
-	{
-		ll r1 = e1.r, m1 = e1.m;
-		ll r2 = e2.r, m2 = e2.m;
 		
-		ll x, y;
-		ll d = exgcd (m1, m2, x, y);
+		if (fabs (a[t][c]) < eps) continue;
 		
-		ll c = r2 - r1;
-		if (c % d != 0) return Equation{0, 0, false};
+		for (int i = c; i < n + 1; i++) swap (a[t][i], a[r][i]);
+		for (int i = n; i >= c; i--) a[r][i] /= a[r][c];
+		for (int i = r + 1; i < n; i++)
+		{
+			if (fabs (a[i][c]) > eps)
+			{
+				for (int j = n; j >= c; j--)
+				{
+					a[i][j] -= a[r][j] * a[i][c];
+				}
+			}
+		}
 		
-		ll t0 = x * c / d % (m2 / d);
-		if (t0 < 0) t0 += m2 / d;
+		r++;
+	}
 	
-		ll em = lcm (m1, m2);
-		ll er = (m1 * t0 + r1) % em;
-		if (er < 0) er += em;
-		return Equation{er, em, true};		
-	}
-
-	ll exCRT ()
+	if (r < n)
 	{
-		Equation curr = eq[1];
-		for (int i = 2; i <= n; i++)
+		for (int i = r; i < n; i++)
 		{
-			curr = merge (curr, eq[i]);
-			if (not curr.ok) return -1;
+			if (fabs (a[i][n]) > eps)
+			{
+				return 1; // No solution
+			}
 		}
-		return curr.r % curr.m;
+		return 2; // Infinite group solutions
 	}
+	
+	for (int i = n - 1; i >= 0; i--)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			a[i][n] -= a[j][n] * a[i][j];
+		}
+	}
+		
+	return 3;
 }
 
 int main ()
 {
-	n = Reader::read ();
+    cin >> n;
 	
-	for (int i = 1; i <= n; i++)
+	for (int i = 0; i < n; i++)
 	{
-		eq[i].m = Reader::read ();
-		eq[i].r = Reader::read ();	
+		for (int j = 0; j < n + 1; j++)
+		{
+			cin >> a[i][j];
+		}
 	}
-
-	cout << (long long) exCRT::exCRT () << endl;
+	
+	int flag = gauss();
+	
+	if (flag == 1)
+	{
+		cout << "No solution" << endl;
+	}
+	else if (flag == 2)
+	{
+		cout << "Infinite group solutions" << endl;
+	}
+	else if (flag == 3)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			if (a[i][n] < eps and a[i][n] > -eps) printf ("0.00\n");  
+			else printf ("%.2lf\n", a[i][n]);
+		}
+	}
 	
 	return 0;
 }
