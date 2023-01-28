@@ -11,6 +11,7 @@
 #include <cmath>
 #include <queue>
 
+#define file(fn) freopen( #fn".in", "r", stdin); freopen ( #fn".out", "w", stdout);
 #define fastread ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 #define endl "\n"
 
